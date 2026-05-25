@@ -37,13 +37,13 @@ const business = {
   address: "9 Kruger St, Central, Krugersdorp, 1739",
   mapsQuery: "9%20Kruger%20St%2C%20Central%2C%20Krugersdorp%2C%201739",
   hours: [
-    { day: "Friday", time: "9 am–5 pm" },
-    { day: "Saturday", time: "8:30 am–3 pm" },
+    { day: "Friday", time: "9 am-5 pm" },
+    { day: "Saturday", time: "8:30 am-3 pm" },
     { day: "Sunday", time: "Closed" },
-    { day: "Monday", time: "9 am–5 pm" },
-    { day: "Tuesday", time: "9 am–5 pm" },
-    { day: "Wednesday", time: "9 am–5 pm" },
-    { day: "Thursday", time: "9 am–5 pm" }
+    { day: "Monday", time: "9 am-5 pm" },
+    { day: "Tuesday", time: "9 am-5 pm" },
+    { day: "Wednesday", time: "9 am-5 pm" },
+    { day: "Thursday", time: "9 am-5 pm" }
   ],
   socials: [
     {
@@ -365,13 +365,13 @@ function Contact() {
                 <p className="text-sm font-semibold text-slate-400">Find Sound Mapricado</p>
                 <p className="mt-1 font-black text-white">{business.address}</p>
               </div>
-            <a
+              <a
                 href={`https://www.google.com/maps/search/?api=1&query=${business.mapsQuery}`}
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-300/40 px-5 py-3 text-sm font-bold text-blue-200 transition hover:bg-blue-300/10"
-            >
+              >
                 Open in Maps
-              <Icon name="arrow" className="h-4 w-4" />
-            </a>
+                <Icon name="arrow" className="h-4 w-4" />
+              </a>
             </div>
           </div>
         </div>
