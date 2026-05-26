@@ -1,28 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const business = {
-  name: "Sound MaPricado",
+  name: "Sound MaPricado (Pty) Ltd",
   registration: "2023/267550/07",
   phoneDisplay: "078 519 6965",
   phoneHref: "tel:+27785196965",
   whatsappHref: "https://wa.me/27785196965",
   email: "soundmapricado@gmail.com",
   emailHref: "mailto:soundmapricado@gmail.com",
-  address: "9 Kruger Street, Krugersdorp Central, 1739",
-  mapsQuery: "9%20Kruger%20Street%2C%20Krugersdorp%20Central%2C%201739",
+  address: "9 Kruger Street, Krugersdorp CBD, 1739",
+  mapsQuery: "9%20Kruger%20Street%2C%20Krugersdorp%20CBD%2C%201739",
   hours: "Mon - Fri: 9:00 - 17:00 | Sat: 8:30 - 15:00",
 };
 
 const images = {
-  hero: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80",
-  workshop:
-    "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80",
-  audio:
-    "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80",
-  electrical:
-    "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=900&q=80",
-  interior:
-    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
+  // Hero updated to reflect the full team standing next to one another
+  teamHero: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=80",
+  workshop: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80",
+  audio: "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80",
+  electrical: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=900&q=80",
+  interior: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
+  
+  // Individual team member image placeholders
+  thandeka: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=600&q=80",
+  tshegofatso: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&h=600&q=80",
+  nomalungelo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=600&q=80",
+  mandla: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&w=600&h=600&q=80",
+  ayanda: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&h=600&q=80",
+
 };
 
 const iconPaths = {
@@ -164,11 +169,11 @@ const services = [
     items: ["EV charging", "Consultation", "Maintenance", "Repairs"],
   },
   {
-    title: "Custom Design & Consultation",
+    title: "Custom Vehicle Upholstery",
     description:
-      "Professional recommendations, design mock-ups and practical planning for private vehicles, taxis, dealerships and fleets.",
-    icon: "key",
-    items: ["Planning", "Mock-ups", "Fleet support", "Aftercare"],
+      "Tailored interior restoration and customization for taxis, commercial fleets, and private clients. High-durability reupholstery for seats, door panels, and roof linings.",
+    icon: "key", // Or map to an appropriate interior path icon
+    items: ["Seat Reupholstery", "Panel Trimming", "Roof Linings", "Fleet Interiors"],
   },
 ];
 
@@ -203,22 +208,44 @@ const team = [
     name: "Ayanda Zulu",
     role: "Owner, CEO & Lead Sound Engineer",
     text: "Leads the vision, growth and partnerships while personally designing and tuning audio systems for taxis, fleets and private vehicles.",
+    image: images.ayanda,
   },
   {
     name: "Nomalungelo Matsele",
     role: "Manager / Operations Lead",
     text: "Runs day-to-day workshop operations, customer service, scheduling and community-focused initiatives.",
+    image: images.nomalungelo,
   },
   {
     name: "Tshegofatso Malematsa",
     role: "Technician / Upholstery Specialist",
     text: "Supports technical and interior work with attention to durable, professional finishes for daily-use vehicles.",
+    image: images.tshegofatso,
   },
   {
     name: "Mandla Ndebele",
     role: "Carpenter",
     text: "Supports custom fabrication work for boot builds, enclosures and workshop fitment projects.",
+    image: images.mandla,
   },
+  {
+    name: "Thandeka Malematsa",
+    role: "Director & Head of CSR",
+    image: images.thandeka,
+    text: "Runs Sound MaPricado's day-to-day operations and community initiatives. She delivers fast, high-quality automotive services while leading skills training and local CSI projects.",
+  },
+  {
+    name: "Tshegofatso Malematsa",
+    role: "Upholstery Technician",
+    image: images.tshegofatso,
+    text: "Specializes in custom vehicle upholstery for taxi, fleet, and private clients. Reupholsters seats, panels, and roofs with structural precision and daily durability.",
+  },
+  {
+    name: "Nomalungelo Matsele",
+    role: "Part-time General Worker",
+    image: images.nomalungelo,
+    text: "Supports all workshop teams with general tasks, installations, vehicle preparation, and site maintenance to guarantee smooth workflows and fast project completion.",
+  }
 ];
 
 const milestones = [
@@ -279,12 +306,12 @@ function Reveal({ children, className = "", delay = 0 }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(entry.target);
-        }
+        setVisible(entry.isIntersecting);
       },
-      { threshold: 0.14 },
+      {
+        threshold: 0.14,
+        rootMargin: "0px 0px -10% 0px",
+      },
     );
 
     observer.observe(element);
@@ -345,76 +372,78 @@ function Header() {
 
 function Hero() {
   return (
-    <section
-      id="home"
-      className="bg-slate-50 px-4 pb-14 pt-8 sm:pb-16 lg:pb-20"
-    >
-      <div className="mx-auto grid max-w-7xl gap-8 overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_22px_65px_-35px_rgba(15,23,42,0.15)] lg:grid-cols-[0.95fr_1.05fr]">
-        <Reveal className="relative h-[520px] overflow-hidden lg:h-auto">
-          <img
-            src={images.hero}
-            alt="Premium vehicle in workshop lighting"
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/10 to-transparent" />
-          <div className="absolute bottom-8 left-8 right-8 max-w-md text-white">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-300">
-              One-stop automotive workshop
-            </p>
-            <p className="mt-3 text-3xl font-black uppercase leading-tight">
-              Audio. Electrical. Security. Branding.
-            </p>
-          </div>
-        </Reveal>
-
-        <Reveal className="px-6 py-10 sm:px-10 lg:px-12" delay={80}>
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-blue-700">
-            Krugersdorp Central
-          </p>
-          <h1 className="mt-5 text-5xl font-black uppercase leading-tight tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
-            Sound
-            <span className="block text-blue-700">MaPricado</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-700 sm:text-lg">
-            Integrated vehicle customisation, car audio, security,
-            auto-electrical, wraps, tinting and graphic services from one
-            workshop.
-          </p>
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <a
-              href="#services"
-              className="rounded-full bg-slate-900 px-7 py-3 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:bg-blue-700"
-            >
-              View Services
-            </a>
-            <a
-              href={business.whatsappHref}
-              className="rounded-full border border-slate-200 bg-white px-7 py-3 text-sm font-black uppercase tracking-[0.16em] text-slate-900 transition hover:border-blue-700 hover:text-blue-700"
-            >
-              WhatsApp Quote
-            </a>
-          </div>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">
-                Service Focus
+    <section id="home" className="bg-slate-50 px-0 pb-14 pt-8 sm:pb-16 lg:pb-20">
+      <div className="mx-auto w-full overflow-hidden bg-white shadow-[0_22px_65px_-35px_rgba(15,23,42,0.15)]">
+        <div className="grid gap-0 lg:grid-cols-[1.4fr_0.7fr]">
+          <Reveal className="relative min-h-[520px] overflow-hidden lg:min-h-[680px]">
+            <img
+              src={images.teamHero}
+              alt="Premium vehicle in workshop lighting"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 left-0 px-6 pb-12 sm:px-10 lg:px-14">
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-300">
+                One-stop automotive workshop
               </p>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                End-to-end audio, security and branding solutions for taxis,
-                fleets and private vehicles.
+              <h1 className="mt-3 text-5xl font-black uppercase leading-tight tracking-tight text-white sm:text-6xl lg:text-7xl">
+                Sound
+                <span className="block text-blue-300">MaPricado</span>
+              </h1>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">
+                Integrated vehicle customisation, car audio, security,
+                auto-electrical, wraps, tinting and graphic services from one
+                workshop.
+              </p>
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <a
+                  href="#services"
+                  className="inline-flex items-center justify-center rounded-full bg-slate-900 px-7 py-3 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:bg-blue-700"
+                >
+                  View Services
+                </a>
+                <a
+                  href={business.whatsappHref}
+                  className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-7 py-3 text-sm font-black uppercase tracking-[0.16em] text-slate-900 transition hover:border-blue-700 hover:text-blue-700"
+                >
+                  WhatsApp Quote
+                </a>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal className="hidden flex-col gap-6 px-6 py-10 sm:px-10 lg:flex lg:px-12" delay={80}>
+            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-8 shadow-sm">
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+                Krugersdorp Central
+              </p>
+              <h2 className="mt-4 text-4xl font-black uppercase tracking-tight text-slate-950">
+                Premium Automotive Services
+              </h2>
+              <p className="mt-5 text-sm leading-7 text-slate-600">
+                A single workshop for audio, security, wraps, tinting and trusted vehicle upgrades.
               </p>
             </div>
-            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">
-                Open Hours
-              </p>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                {business.hours}
-              </p>
+            <div className="grid gap-4">
+              <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">
+                  Service Focus
+                </p>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  End-to-end audio, security and branding solutions for taxis, fleets and private vehicles.
+                </p>
+              </div>
+              <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+                <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">
+                  Open Hours
+                </p>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  {business.hours}
+                </p>
+              </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -702,7 +731,7 @@ function Gallery() {
 function TeamAndMilestones() {
   return (
     <section id="team" className="bg-white px-4 py-16 sm:py-20">
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.95fr]">
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <Reveal>
             <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
@@ -712,19 +741,37 @@ function TeamAndMilestones() {
               People Behind The Work
             </h2>
           </Reveal>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          
+          <div className="mt-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             {team.map((person, index) => (
               <Reveal key={person.name} delay={index * 80}>
-                <article className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 shadow-sm">
-                  <h3 className="text-xl font-black uppercase text-slate-950">
-                    {person.name}
-                  </h3>
-                  <p className="mt-2 text-xs font-black uppercase tracking-[0.16em] text-blue-700">
-                    {person.role}
-                  </p>
-                  <p className="mt-4 text-sm font-medium leading-6 text-slate-600">
-                    {person.text}
-                  </p>
+                {/* Outermost card shell configured to contrast nicely with image transparent transitions */}
+                <article className="overflow-hidden rounded-[32px] border border-slate-200 bg-slate-50 shadow-sm transition hover:shadow-md">
+                  
+                  {/* Photo container implementing a absolute overlay gradient which fades dynamically at the bottom */}
+                  <div className="relative h-64 w-full overflow-hidden bg-slate-200">
+                    <img
+                      src={person.image}
+                      alt={`Portrait of ${person.name}, ${person.role}`}
+                      className="h-full w-full object-cover object-top transition duration-500 hover:scale-105"
+                    />
+                    {/* The masking layer creating the precise fading transition effect at the bottom boundary */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent" />
+                  </div>
+
+                  {/* Operational Details rendering neatly below the faded imagery portion */}
+                  <div className="p-6 pt-2">
+                    <h3 className="text-xl font-black uppercase text-slate-950">
+                      {person.name}
+                    </h3>
+                    <p className="mt-1 text-xs font-black uppercase tracking-[0.16em] text-blue-700">
+                      {person.role}
+                    </p>
+                    <p className="mt-4 text-sm font-medium leading-6 text-slate-600">
+                      {person.text}
+                    </p>
+                  </div>
+
                 </article>
               </Reveal>
             ))}
@@ -733,7 +780,7 @@ function TeamAndMilestones() {
 
         <Reveal
           delay={120}
-          className="rounded-[32px] border border-slate-200 bg-slate-50 p-8 shadow-sm"
+          className="rounded-[32px] border border-slate-200 bg-slate-50 p-8 shadow-sm lg:self-start"
         >
           <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
             Milestones
@@ -817,13 +864,15 @@ function Contact() {
         >
           <iframe
             title="Sound MaPricado location on Google Maps"
-            src={`https://www.google.com/maps?q=${business.mapsQuery}&output=embed`}
+            src={`https://maps.google.com/maps?q=${business.mapsQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="h-[460px] w-full border-0"
           />
           <a
-            href={`https://www.google.com/maps/search/?api=1&query=${business.mapsQuery}`}
+            href={`https://maps.google.com/maps?q=${business.mapsQuery}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center justify-center gap-3 border-t border-slate-200 bg-slate-900 px-6 py-5 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:bg-blue-700"
           >
             Open In Maps
@@ -834,6 +883,76 @@ function Contact() {
     </section>
   );
 }
+
+// function Contact() {
+//   return (
+//     <section id="contact" className="bg-slate-50 px-4 py-16 sm:py-20">
+//       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+//         <Reveal className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+//           <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+//             Book With Us
+//           </p>
+//           <h2 className="mt-3 text-4xl font-black uppercase tracking-tight text-slate-950 sm:text-5xl">
+//             Contact Sound MaPricado
+//           </h2>
+//           <div className="mt-8 grid gap-4">
+//             <a
+//               href={business.phoneHref}
+//               className="flex items-center gap-4 rounded-3xl border border-slate-200 bg-slate-50 px-5 py-5 text-sm font-black uppercase tracking-[0.14em] text-slate-900 transition hover:border-blue-700 hover:text-blue-700"
+//             >
+//               <Icon name="phone" className="h-6 w-6" />
+//               {business.phoneDisplay}
+//             </a>
+//             <a
+//               href={business.whatsappHref}
+//               className="flex items-center gap-4 rounded-3xl bg-slate-900 px-5 py-5 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:bg-blue-700"
+//             >
+//               <Icon name="message" className="h-6 w-6" />
+//               Get a Quote via WhatsApp
+//             </a>
+//             <a
+//               href={business.emailHref}
+//               className="rounded-3xl border border-slate-200 bg-slate-50 px-5 py-5 text-sm font-black uppercase tracking-[0.14em] text-slate-900 transition hover:border-blue-700 hover:text-blue-700"
+//             >
+//               {business.email}
+//             </a>
+//             <div className="rounded-3xl border border-slate-200 bg-blue-50 p-5">
+//               <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-700">
+//                 Address
+//               </p>
+//               <p className="mt-2 font-black text-slate-950">
+//                 {business.address}
+//               </p>
+//               <p className="mt-3 text-sm font-semibold text-slate-700">
+//                 {business.hours}
+//               </p>
+//             </div>
+//           </div>
+//         </Reveal>
+
+//         <Reveal
+//           delay={120}
+//           className="overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-sm"
+//         >
+//           <iframe
+//             title="Sound MaPricado location on Google Maps"
+//             src={`https://maps.google.com/maps?q=${business.mapsQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+//             loading="lazy"
+//             referrerPolicy="no-referrer-when-downgrade"
+//             className="h-[460px] w-full border-0"
+//           />
+//           <a
+//             href={`https://www.google.com/maps/search/?api=1&query=${business.mapsQuery}`}
+//             className="flex items-center justify-center gap-3 border-t border-slate-200 bg-slate-900 px-6 py-5 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:bg-blue-700"
+//           >
+//             Open In Maps
+//             <Icon name="arrow" className="h-4 w-4" />
+//           </a>
+//         </Reveal>
+//       </div>
+//     </section>
+//   );
+// }
 
 function Footer() {
   return (
