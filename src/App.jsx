@@ -1,158 +1,339 @@
-import React from "react";
-
-const iconClassNames = {
-  alarm: "fa-solid fa-bell",
-  arrow: "fa-solid fa-arrow-right",
-  battery: "fa-solid fa-battery-full",
-  cable: "fa-solid fa-plug",
-  car: "fa-solid fa-car",
-  check: "fa-solid fa-check",
-  chevron: "fa-solid fa-chevron-right",
-  clock: "fa-solid fa-clock",
-  key: "fa-solid fa-key",
-  lock: "fa-solid fa-lock",
-  map: "fa-solid fa-map-location-dot",
-  message: "fa-solid fa-comments",
-  navigation: "fa-solid fa-compass",
-  phone: "fa-solid fa-phone",
-  shield: "fa-solid fa-shield-halved",
-  sparkle: "fa-solid fa-star",
-  speaker: "fa-solid fa-volume-high",
-  truck: "fa-solid fa-truck",
-  wrench: "fa-solid fa-wrench",
-  facebook: "fa-brands fa-facebook-f",
-  tiktok: "fa-brands fa-tiktok",
-  instagram: "fa-brands fa-instagram"
-};
-
-function Icon({ name, className = "h-5 w-5", ...props }) {
-  const iconClass = iconClassNames[name] || "";
-  return <i className={`${iconClass} fa-fw ${className}`} aria-hidden="true" {...props} />;
-}
+import React, { useEffect, useRef, useState } from "react";
 
 const business = {
+  name: "Sound MaPricado",
+  registration: "2023/267550/07",
   phoneDisplay: "078 519 6965",
   phoneHref: "tel:+27785196965",
   whatsappHref: "https://wa.me/27785196965",
-  address: "9 Kruger St, Central, Krugersdorp, 1739",
-  mapsQuery: "9%20Kruger%20St%2C%20Central%2C%20Krugersdorp%2C%201739",
-  hours: [
-    { day: "Friday", time: "9 am–5 pm" },
-    { day: "Saturday", time: "8:30 am–3 pm" },
-    { day: "Sunday", time: "Closed" },
-    { day: "Monday", time: "9 am–5 pm" },
-    { day: "Tuesday", time: "9 am–5 pm" },
-    { day: "Wednesday", time: "9 am–5 pm" },
-    { day: "Thursday", time: "9 am–5 pm" }
-  ],
-  socials: [
-    {
-      name: "Facebook",
-      href: "https://web.facebook.com/p/Sound-MaPricado-100076609646660/?_rdc=1&_rdr#",
-      icon: "facebook"
-    },
-    { name: "TikTok", href: "https://www.tiktok.com/@soundmapricado", icon: "tiktok" },
-    { name: "Instagram", href: "https://www.instagram.com/sound_mapricado/", icon: "instagram" }
-  ]
+  email: "soundmapricado@gmail.com",
+  emailHref: "mailto:soundmapricado@gmail.com",
+  address: "9 Kruger Street, Krugersdorp Central, 1739",
+  mapsQuery: "9%20Kruger%20Street%2C%20Krugersdorp%20Central%2C%201739",
+  hours: "Mon - Fri: 9:00 - 17:00 | Sat: 8:30 - 15:00",
+};
+
+const images = {
+  hero: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80",
+  workshop:
+    "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80",
+  audio:
+    "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80",
+  electrical:
+    "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=900&q=80",
+  interior:
+    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
+};
+
+const iconPaths = {
+  audio: (
+    <>
+      <path d="M4 9v6h4l5 4V5L8 9H4z" />
+      <path d="M17 9.5a4 4 0 0 1 0 5" />
+      <path d="M19.5 7a8 8 0 0 1 0 10" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="m9 12 2 2 4-5" />
+    </>
+  ),
+  wire: (
+    <>
+      <path d="M7 7h10" />
+      <path d="M7 17h10" />
+      <path d="M7 7v10" />
+      <path d="M17 7v10" />
+      <path d="M3 12h4" />
+      <path d="M17 12h4" />
+    </>
+  ),
+  key: (
+    <>
+      <circle cx="7.5" cy="14.5" r="3.5" />
+      <path d="m10 12 9-9" />
+      <path d="m15 6 3 3" />
+      <path d="m17 4 3 3" />
+    </>
+  ),
+  car: (
+    <>
+      <path d="M5 17h14" />
+      <path d="m6 13 2-5h8l2 5" />
+      <path d="M6 13h12v4H6z" />
+      <circle cx="8" cy="17" r="2" />
+      <circle cx="16" cy="17" r="2" />
+    </>
+  ),
+  graphic: (
+    <>
+      <path d="M4 20h16" />
+      <path d="M6 16 16 6l2 2L8 18H6v-2z" />
+      <path d="m14 8 2 2" />
+    </>
+  ),
+  tint: (
+    <>
+      <path d="M4 5h16v14H4z" />
+      <path d="M8 5v14" />
+      <path d="M16 5v14" />
+      <path d="M4 10h16" />
+    </>
+  ),
+  charge: (
+    <>
+      <path d="M7 2v8" />
+      <path d="M11 2v8" />
+      <path d="M9 10v3a4 4 0 0 0 4 4h1" />
+      <path d="m17 13-2 4h3l-2 5" />
+    </>
+  ),
+  phone: (
+    <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" />
+  ),
+  message: (
+    <>
+      <path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5.2A8.5 8.5 0 1 1 21 11.5z" />
+      <path d="M8 10h8" />
+      <path d="M8 14h5" />
+    </>
+  ),
+  map: (
+    <>
+      <path d="M12 21s7-4.5 7-11a7 7 0 0 0-14 0c0 6.5 7 11 7 11z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </>
+  ),
+  arrow: (
+    <>
+      <path d="M5 12h14" />
+      <path d="m13 5 7 7-7 7" />
+    </>
+  ),
 };
 
 const services = [
   {
-    title: "Car Sound & Custom Setups",
-    description: "Amplifiers, speakers, custom boot builds, clean installs, and tuned audio upgrades.",
-    icon: "speaker",
-    accent: "from-blue-400 to-sky-500"
+    title: "Car Sound & Entertainment Systems",
+    description:
+      "Custom speaker upgrades, component systems, subwoofer enclosures, amplifier installs, processors, touchscreen head units, reverse cameras and full audio builds.",
+    icon: "audio",
+    items: ["Speaker upgrades", "Amplifiers", "Subwoofers", "Reverse cameras"],
   },
   {
-    title: "Vehicle Security & Self-Tracking",
-    description: "Alarms, anti-hijack systems, central locking, immobilisers, and tracking devices.",
+    title: "Car Security & Anti-Theft Systems",
+    description:
+      "Alarm systems, immobilisers, anti-hijack systems, GPS tracking units, central locking and remote kits.",
     icon: "shield",
-    accent: "from-slate-500 to-blue-500"
+    items: ["Alarms", "Immobilisers", "Anti-hijack", "Tracking"],
   },
   {
-    title: "Auto-Electrical & Re-Wiring",
-    description: "Diagnostics, fault finding, loom repairs, custom wiring, and electrical restorations.",
-    icon: "cable",
-    accent: "from-blue-400 to-sky-500"
+    title: "Auto Electrical Services",
+    description:
+      "Electrical diagnostics, fault finding, wiring repairs, battery and alternator upgrades, starter motor work, window mechanisms and switch repairs.",
+    icon: "wire",
+    items: ["Diagnostics", "Wiring", "Batteries", "Alternators"],
   },
   {
-    title: "On-Board Diagnosis & Key Coding",
-    description: "Transponder keys, remote coding, error-code clearing, and electronic module checks.",
-    icon: "key",
-    accent: "from-sky-400 to-blue-400"
-  },
-  {
-    title: "Popped Airbag Replacement",
-    description: "Safety system restoration, airbag replacement support, and warning-light resolution.",
+    title: "Vehicle Wraps & Branding",
+    description:
+      "Full colour-change wraps, paint protection film, taxi association livery, commercial fleet branding, decals, striping and regulatory markings.",
     icon: "car",
-    accent: "from-blue-300 to-sky-500"
+    items: ["Full wraps", "Fleet branding", "Taxi livery", "Decals"],
   },
   {
-    title: "Roof Lining Restoration",
-    description: "Sagging roof lining repairs, cabin fabric replacement, and interior finish refreshes.",
-    icon: "sparkle",
-    accent: "from-sky-400 to-blue-400"
+    title: "Graphic Services",
+    description:
+      "Logo design, brand concepts, wrap design, print-ready artwork, signage layouts and brand identity support for taxi associations and SMEs.",
+    icon: "graphic",
+    items: ["Logos", "Artwork", "Signage", "Brand identity"],
   },
   {
-    title: "Transportation & Towing",
-    description: "Scheduled vehicle transport and recovery support across Krugersdorp and the West Rand.",
-    icon: "truck",
-    accent: "from-blue-400 to-sky-500"
+    title: "Window Tinting & Detailing",
+    description:
+      "Smash-and-grab safety film, legal compliance tinting, UV and heat-rejection films, detailing and comfort upgrades.",
+    icon: "tint",
+    items: ["Smash & grab", "UV film", "Heat rejection", "Detailing"],
   },
   {
-    title: "Workshop Diagnostics",
-    description: "Practical advice, inspection, and repair planning for complex vehicle electrical faults.",
-    icon: "wrench",
-    accent: "from-slate-500 to-blue-400"
-  }
+    title: "EV Charging & System Upgrades",
+    description:
+      "EV charging solutions, system upgrades, maintenance, repairs and custom design consultation for modern vehicle needs.",
+    icon: "charge",
+    items: ["EV charging", "Consultation", "Maintenance", "Repairs"],
+  },
+  {
+    title: "Custom Design & Consultation",
+    description:
+      "Professional recommendations, design mock-ups and practical planning for private vehicles, taxis, dealerships and fleets.",
+    icon: "key",
+    items: ["Planning", "Mock-ups", "Fleet support", "Aftercare"],
+  },
 ];
 
-const galleryCategories = [
-  {
-    title: "Sound & Audio",
-    description: "Custom boot layouts, speaker upgrades, amplifier installations, and neat wiring finishes.",
-    icon: "speaker"
-  },
-  {
-    title: "Security & Electrical",
-    description: "Alarm systems, tracking devices, key coding, diagnostics, and electrical repair work.",
-    icon: "lock"
-  },
-  {
-    title: "Interior Restoration",
-    description: "Roof lining repairs, trim refreshes, cabin fabric replacement, and restoration results.",
-    icon: "sparkle"
-  }
+const values = [
+  "Customer satisfaction",
+  "Innovation",
+  "Quality",
+  "Integrity",
+  "Teamwork",
 ];
 
-function Header() {
-  const links = [
-    { href: "#services", label: "Services" },
-    { href: "#gallery", label: "Gallery" },
-    { href: "#contact", label: "Contact" }
-  ];
+const markets = [
+  {
+    name: "Taxi Associations",
+    share: "45%",
+    text: "Durable sound, security, tinting, upholstery, livery and fast turnaround to reduce vehicle downtime.",
+  },
+  {
+    name: "Dealerships & Fleet Managers",
+    share: "35%",
+    text: "Consistent fitment, standardised branding, consolidated support and scalable aftermarket installations.",
+  },
+  {
+    name: "Private Vehicle Owners",
+    share: "20%",
+    text: "Premium sound builds, wraps, upholstery, tracking, anti-hijack systems and expert electrical support.",
+  },
+];
+
+const team = [
+  {
+    name: "Ayanda Zulu",
+    role: "Owner, CEO & Lead Sound Engineer",
+    text: "Leads the vision, growth and partnerships while personally designing and tuning audio systems for taxis, fleets and private vehicles.",
+  },
+  {
+    name: "Nomalungelo Matsele",
+    role: "Manager / Operations Lead",
+    text: "Runs day-to-day workshop operations, customer service, scheduling and community-focused initiatives.",
+  },
+  {
+    name: "Tshegofatso Malematsa",
+    role: "Technician / Upholstery Specialist",
+    text: "Supports technical and interior work with attention to durable, professional finishes for daily-use vehicles.",
+  },
+  {
+    name: "Mandla Ndebele",
+    role: "Carpenter",
+    text: "Supports custom fabrication work for boot builds, enclosures and workshop fitment projects.",
+  },
+];
+
+const milestones = [
+  {
+    year: "2024",
+    title: "Mobile operations launched",
+    text: "Started working on-site at customer locations, building a reputation for quality work and customer service.",
+  },
+  {
+    year: "2025",
+    title: "Shared workshop expansion",
+    text: "Moved into a small shared workshop space to centralise operations and serve a growing customer base.",
+  },
+  {
+    year: "2026",
+    title: "Dedicated workshop facility",
+    text: "The move into a dedicated workshop increases capacity and strengthens the company as a one-stop automotive solution.",
+  },
+];
+
+const shortcutLinks = [
+  { href: "#about", label: "About", icon: "shield" },
+  { href: "#services", label: "Services", icon: "wire" },
+  { href: "#markets", label: "Markets", icon: "car" },
+  { href: "#contact", label: "Contact", icon: "phone" },
+];
+
+const gallery = [
+  { title: "Sound & Audio", image: images.audio },
+  { title: "Electrical & Security", image: images.electrical },
+  { title: "Wraps, Tint & Interior", image: images.interior },
+];
+
+function Icon({ name, className = "h-5 w-5" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      {iconPaths[name]}
+    </svg>
+  );
+}
+
+function Reveal({ children, className = "", delay = 0 }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.14 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/90 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <a href="#home" className="flex items-center gap-3 text-white">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-blue-300/40 bg-blue-400/10 shadow-glow">
-            <Icon name="battery" className="h-5 w-5 text-blue-300" />
-          </span>
-          <span className="text-base font-black uppercase tracking-wide sm:text-lg">Sound Mapricado</span>
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={`${className} transition-all duration-700 ease-out ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Header() {
+  return (
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 px-4 py-4 backdrop-blur-lg">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 text-slate-900 sm:px-8">
+        <a
+          href="#home"
+          className="text-lg font-black uppercase tracking-[0.18em] text-slate-900"
+        >
+          Sound<span className="text-blue-700">MaPricado</span>
         </a>
-
-        <div className="hidden items-center gap-8 md:flex">
-          {links.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm font-medium text-slate-300 transition hover:text-blue-300">
-              {link.label}
-            </a>
-          ))}
+        <div className="hidden items-center gap-7 text-xs font-semibold uppercase tracking-[0.28em] text-slate-700 md:flex">
+          <a href="#about" className="transition hover:text-blue-700">
+            About
+          </a>
+          <a href="#services" className="transition hover:text-blue-700">
+            Services
+          </a>
+          <a href="#markets" className="transition hover:text-blue-700">
+            Markets
+          </a>
+          <a href="#team" className="transition hover:text-blue-700">
+            Team
+          </a>
+          <a href="#contact" className="transition hover:text-blue-700">
+            Contact
+          </a>
         </div>
-
         <a
           href={business.phoneHref}
-          className="inline-flex items-center gap-2 rounded-md bg-blue-400 px-4 py-2 text-sm font-bold text-slate-950 shadow-glow transition hover:bg-blue-500"
+          className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-white transition hover:bg-blue-700"
         >
           <Icon name="phone" className="h-4 w-4" />
           Call Now
@@ -164,62 +345,228 @@ function Header() {
 
 function Hero() {
   return (
-    <section id="home" className="relative isolate overflow-hidden bg-slate-950">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.20),transparent_32%),linear-gradient(135deg,rgba(15,23,42,0.70),rgba(2,6,23,1))]" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-px bg-gradient-to-r from-transparent via-blue-300/70 to-transparent" />
-
-      <div className="mx-auto grid min-h-[calc(100vh-68px)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
-        <div>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-blue-300/10 px-4 py-2 text-sm font-semibold text-blue-200">
-            <Icon name="shield" className="h-4 w-4 text-blue-200" />
-            West Rand vehicle security, audio, electrical and restoration workshop
+    <section
+      id="home"
+      className="bg-slate-50 px-4 pb-14 pt-8 sm:pb-16 lg:pb-20"
+    >
+      <div className="mx-auto grid max-w-7xl gap-8 overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_22px_65px_-35px_rgba(15,23,42,0.15)] lg:grid-cols-[0.95fr_1.05fr]">
+        <Reveal className="relative h-[520px] overflow-hidden lg:h-auto">
+          <img
+            src={images.hero}
+            alt="Premium vehicle in workshop lighting"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/10 to-transparent" />
+          <div className="absolute bottom-8 left-8 right-8 max-w-md text-white">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-300">
+              One-stop automotive workshop
+            </p>
+            <p className="mt-3 text-3xl font-black uppercase leading-tight">
+              Audio. Electrical. Security. Branding.
+            </p>
           </div>
+        </Reveal>
 
-          <h1 className="max-w-4xl text-5xl font-black leading-none text-white sm:text-6xl lg:text-7xl">
-            Sound Mapricado
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
-            Premium Car Audio, Advanced Vehicle Security & Specialized Auto-Electrical Services in Krugersdorp.
+        <Reveal className="px-6 py-10 sm:px-10 lg:px-12" delay={80}>
+          <p className="text-xs font-black uppercase tracking-[0.35em] text-blue-700">
+            Krugersdorp Central
           </p>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <h1 className="mt-5 text-5xl font-black uppercase leading-tight tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
+            Sound
+            <span className="block text-blue-700">MaPricado</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-700 sm:text-lg">
+            Integrated vehicle customisation, car audio, security,
+            auto-electrical, wraps, tinting and graphic services from one
+            workshop.
+          </p>
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <a
               href="#services"
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:border-blue-300/60 hover:bg-blue-300/10"
+              className="rounded-full bg-slate-900 px-7 py-3 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:bg-blue-700"
             >
               View Services
-              <Icon name="chevron" className="h-4 w-4" />
             </a>
             <a
               href={business.whatsappHref}
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-400 px-6 py-3 text-sm font-black text-slate-950 shadow-glow transition hover:bg-blue-500"
+              className="rounded-full border border-slate-200 bg-white px-7 py-3 text-sm font-black uppercase tracking-[0.16em] text-slate-900 transition hover:border-blue-700 hover:text-blue-700"
             >
-              <Icon name="message" className="h-4 w-4 text-slate-950" />
-              Get a Quote via WhatsApp
+              WhatsApp Quote
             </a>
           </div>
-        </div>
 
-        <div className="relative">
-          <div className="aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-slate-900 shadow-2xl">
-            <div className="flex h-full flex-col justify-between bg-[linear-gradient(145deg,rgba(30,41,59,0.92),rgba(15,23,42,0.96)),repeating-linear-gradient(90deg,rgba(96,165,250,0.10)_0,rgba(96,165,250,0.10)_1px,transparent_1px,transparent_52px)] p-6 sm:p-8">
-              <div className="flex items-center justify-between">
-                <div className="rounded-md border border-blue-300/30 bg-slate-950/70 px-3 py-2 text-xs font-bold uppercase text-blue-200">
-                  Precision Workshop
-                </div>
-                <Icon name="alarm" className="h-8 w-8 text-blue-300" />
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">
+                Service Focus
+              </p>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                End-to-end audio, security and branding solutions for taxis,
+                fleets and private vehicles.
+              </p>
+            </div>
+            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">
+                Open Hours
+              </p>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                {business.hours}
+              </p>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function ShortcutBar() {
+  return (
+    <section className="bg-white px-4 py-10">
+      <Reveal className="mx-auto grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4">
+        {shortcutLinks.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="group rounded-[28px] border border-slate-200 bg-white p-5 text-center transition hover:-translate-y-1 hover:border-blue-700 hover:bg-blue-50"
+          >
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-slate-900 text-white transition group-hover:bg-blue-700">
+              <Icon name={item.icon} className="h-7 w-7" />
+            </span>
+            <span className="mt-4 block text-xs font-black uppercase tracking-[0.18em] text-slate-900">
+              {item.label}
+            </span>
+          </a>
+        ))}
+      </Reveal>
+    </section>
+  );
+}
+
+function About() {
+  return (
+    <section id="about" className="bg-slate-50 px-4 py-16 sm:py-20">
+      <Reveal className="mx-auto max-w-6xl rounded-[32px] border border-slate-200 bg-white px-6 py-12 shadow-sm sm:px-12">
+        <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+          Company Overview
+        </p>
+        <h2 className="mt-3 text-4xl font-black uppercase tracking-tight text-slate-950 sm:text-5xl">
+          More Than Sound
+        </h2>
+        <div className="mt-4 h-1 w-20 rounded-full bg-blue-700" />
+        <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-slate-700 sm:text-lg">
+          Sound MaPricado is an automotive aftermarket specialist providing
+          high-quality car audio, electrical systems, security, vehicle
+          customisation and branding services. By bringing multiple services
+          under one roof, the workshop helps customers avoid the delays and
+          costs of using several suppliers.
+        </p>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 text-left">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-700">
+              Industry
+            </p>
+            <h3 className="mt-3 text-2xl font-black uppercase text-slate-950">
+              Automotive Aftermarket
+            </h3>
+            <p className="mt-4 text-sm font-medium leading-7 text-slate-600">
+              Sound MaPricado supports aftermarket customisation, vehicle
+              security, audio fitment and wrap services.
+            </p>
+          </div>
+          <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 text-left">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-700">
+              Approach
+            </p>
+            <h3 className="mt-3 text-2xl font-black uppercase text-slate-950">
+              One Workshop
+            </h3>
+            <p className="mt-4 text-sm font-medium leading-7 text-slate-600">
+              Customers choose a single point of contact for audio, security,
+              electrical, branding and interior upgrades.
+            </p>
+          </div>
+          <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 text-left">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-700">
+              Value
+            </p>
+            <h3 className="mt-3 text-2xl font-black uppercase text-slate-950">
+              Efficient Service Delivery
+            </h3>
+            <p className="mt-4 text-sm font-medium leading-7 text-slate-600">
+              The workshop helps fleets, taxi operators and private owners
+              deliver dependable upgrades with a consistent finish.
+            </p>
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
+function MissionVision() {
+  return (
+    <section className="bg-white px-4 py-16 sm:py-20">
+      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_0.85fr]">
+        <Reveal className="rounded-[32px] border border-slate-200 bg-slate-50 p-8 shadow-sm">
+          <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-700">
+            Why Choose Us
+          </p>
+          <h2 className="mt-3 text-4xl font-black uppercase tracking-tight text-slate-950 sm:text-5xl">
+            Smart solutions for every vehicle.
+          </h2>
+          <div className="mt-7 space-y-6 text-slate-700">
+            <p className="text-base leading-8">
+              Sound MaPricado helps customers build safer, smarter and
+              better-connected vehicles with expert audio tuning, security
+              systems, electrical diagnostics and custom branding.
+            </p>
+            <p className="text-base leading-8">
+              Our workshop combines technical know-how with fast response times
+              so projects move from concept to completion without delays.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-3xl border border-slate-200 bg-white p-5">
+                <p className="text-sm font-black uppercase tracking-[0.24em] text-blue-700">
+                  Mission
+                </p>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  Deliver automotive solutions that protect, upgrade and impress
+                  with clarity and reliability.
+                </p>
               </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {["Audio", "Security", "Diagnostics", "Restoration"].map((item) => (
-                  <div key={item} className="rounded-lg border border-white/10 bg-slate-950/60 p-4">
-                    <Icon name="check" className="mb-3 h-5 w-5 text-blue-300" />
-                    <p className="text-sm font-bold text-white">{item}</p>
-                  </div>
-                ))}
+              <div className="rounded-3xl border border-slate-200 bg-white p-5">
+                <p className="text-sm font-black uppercase tracking-[0.24em] text-blue-700">
+                  Vision
+                </p>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  Be the first choice for taxi, fleet and private owners needing
+                  premium car customisation and service excellence.
+                </p>
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
+
+        <Reveal className="rounded-[32px] border border-slate-200 bg-blue-700 p-8 shadow-sm">
+          <p className="text-xs font-black uppercase tracking-[0.28em] text-blue-200">
+            Core Values
+          </p>
+          <h3 className="mt-3 text-3xl font-black uppercase tracking-tight text-white">
+            Built on trust and performance.
+          </h3>
+          <div className="mt-8 space-y-3">
+            {values.map((value) => (
+              <div
+                key={value}
+                className="rounded-3xl bg-slate-900/10 px-4 py-4 text-sm font-semibold tracking-[0.02em] text-white"
+              >
+                {value}
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -227,28 +574,89 @@ function Hero() {
 
 function Services() {
   return (
-    <section id="services" className="bg-slate-900 px-4 py-20 sm:px-6 lg:px-8">
+    <section id="services" className="bg-slate-50 px-4 py-16 sm:py-20">
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-3xl">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-300">Services</p>
-          <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">More than sound. Built for every essential vehicle system.</h2>
-          <p className="mt-4 text-base leading-7 text-slate-300">
-            From clean audio installs to anti-hijack systems, key coding, wiring faults, safety repairs, and interior restoration, Sound Mapricado gives Krugersdorp drivers one workshop for the work that keeps vehicles usable, secure, and sharp.
+        <Reveal>
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+            Our Services
           </p>
-        </div>
+          <h2 className="mt-3 text-4xl font-black uppercase tracking-tight text-slate-950 sm:text-5xl">
+            Everything for audio, security and wrap work.
+          </h2>
+          <p className="mt-6 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
+            We deliver professional aftermarket solutions for private vehicles,
+            taxis and fleets. Our focus is durability, clean fitment and
+            consistent service.
+          </p>
+        </Reveal>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((service) => {
-            return (
-              <article key={service.title} className="group rounded-lg border border-white/10 bg-slate-950/70 p-5 transition hover:-translate-y-1 hover:border-blue-300/50 hover:shadow-glow">
-                <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br ${service.accent}`}>
-                  <Icon name={service.icon} className="h-6 w-6 text-slate-950" />
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {services.map((item, index) => (
+            <Reveal key={item.title} delay={index * 60}>
+              <article className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span className="inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-blue-700 text-white">
+                  <Icon name={item.icon} className="h-6 w-6" />
+                </span>
+                <h3 className="mt-6 text-xl font-black uppercase tracking-tight text-slate-950">
+                  {item.title}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  {item.description}
+                </p>
+                <div className="mt-6 grid gap-2 text-sm text-slate-700 sm:grid-cols-2">
+                  {item.items.map((feature) => (
+                    <span
+                      key={feature}
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2"
+                    >
+                      <span className="h-2.5 w-2.5 rounded-full bg-blue-700" />
+                      {feature}
+                    </span>
+                  ))}
                 </div>
-                <h3 className="text-lg font-black text-white">{service.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{service.description}</p>
               </article>
-            );
-          })}
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Markets() {
+  return (
+    <section id="markets" className="bg-white px-4 py-16 sm:py-20">
+      <div className="mx-auto max-w-7xl">
+        <Reveal>
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+            Markets
+          </p>
+          <h2 className="mt-3 text-4xl font-black uppercase tracking-tight text-slate-950 sm:text-5xl">
+            Taxi, fleet, dealership and private owner markets.
+          </h2>
+          <p className="mt-6 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
+            Our workshop is built to support high-volume taxi and fleet work
+            while still offering premium service for private vehicles and
+            specialist builds.
+          </p>
+        </Reveal>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {markets.map((market, index) => (
+            <Reveal key={market.name} delay={index * 80}>
+              <article className="rounded-[32px] border border-slate-200 bg-slate-50 p-8 shadow-sm">
+                <p className="text-sm font-black uppercase tracking-[0.24em] text-blue-700">
+                  {market.name}
+                </p>
+                <p className="mt-5 text-4xl font-black text-slate-950">
+                  {market.share}
+                </p>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  {market.text}
+                </p>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -257,36 +665,101 @@ function Services() {
 
 function Gallery() {
   return (
-    <section id="gallery" className="bg-slate-950 px-4 py-20 sm:px-6 lg:px-8">
+    <section id="gallery" className="bg-slate-50 px-4 py-16 sm:py-20">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-          <div>
-            <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-300">Portfolio</p>
-            <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">Ready for real Facebook and WhatsApp job photos.</h2>
-          </div>
-          <p className="text-base leading-7 text-slate-300">
-            The gallery is structured around the three service groups customers need to understand fast: audio, security and electrical, and interior restoration.
+        <Reveal>
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+            Portfolio
           </p>
-        </div>
+          <h2 className="mt-3 text-4xl font-black uppercase tracking-tight text-slate-950 sm:text-6xl">
+            Job Categories
+          </h2>
+        </Reveal>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {galleryCategories.map((category, index) => {
-            return (
-              <article key={category.title} className="overflow-hidden rounded-lg border border-white/10 bg-slate-900">
-                <div className="flex aspect-[4/3] items-center justify-center bg-[linear-gradient(135deg,rgba(251,146,60,0.12),rgba(30,41,59,0.92)),repeating-linear-gradient(45deg,rgba(248,113,113,0.10)_0,rgba(248,113,113,0.10)_1px,transparent_1px,transparent_18px)]">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border border-blue-300/30 bg-slate-950/80">
-                    <Icon name={category.icon} className="h-9 w-9 text-blue-300" />
-                  </div>
+        <div className="mt-10 grid gap-8 md:grid-cols-3">
+          {gallery.map((item, index) => (
+            <Reveal key={item.title} delay={index * 100}>
+              <article className="space-y-4 text-center">
+                <div className="mx-auto aspect-square max-w-[280px] overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-sm">
+                  <img
+                    src={item.image}
+                    alt={`${item.title} portfolio placeholder`}
+                    className="h-full w-full object-cover transition duration-500 hover:scale-105"
+                  />
                 </div>
-                <div className="p-5">
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Gallery {String(index + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-2 text-xl font-black text-white">{category.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{category.description}</p>
+                <div className="mx-auto max-w-[260px] rounded-[24px] bg-white px-5 py-4 text-sm font-black uppercase tracking-[0.16em] text-slate-950 shadow-sm">
+                  {item.title}
                 </div>
               </article>
-            );
-          })}
+            </Reveal>
+          ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function TeamAndMilestones() {
+  return (
+    <section id="team" className="bg-white px-4 py-16 sm:py-20">
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.95fr]">
+        <div>
+          <Reveal>
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+              Team
+            </p>
+            <h2 className="mt-3 text-4xl font-black uppercase leading-none text-slate-950 sm:text-6xl">
+              People Behind The Work
+            </h2>
+          </Reveal>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {team.map((person, index) => (
+              <Reveal key={person.name} delay={index * 80}>
+                <article className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                  <h3 className="text-xl font-black uppercase text-slate-950">
+                    {person.name}
+                  </h3>
+                  <p className="mt-2 text-xs font-black uppercase tracking-[0.16em] text-blue-700">
+                    {person.role}
+                  </p>
+                  <p className="mt-4 text-sm font-medium leading-6 text-slate-600">
+                    {person.text}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        <Reveal
+          delay={120}
+          className="rounded-[32px] border border-slate-200 bg-slate-50 p-8 shadow-sm"
+        >
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+            Milestones
+          </p>
+          <h2 className="mt-3 text-3xl font-black uppercase text-slate-950">
+            Growth Path
+          </h2>
+          <div className="mt-7 space-y-6">
+            {milestones.map((milestone) => (
+              <div
+                key={milestone.year}
+                className="rounded-3xl border-l-4 border-blue-700 bg-white p-5 shadow-sm"
+              >
+                <p className="text-3xl font-black text-slate-950">
+                  {milestone.year}
+                </p>
+                <h3 className="mt-1 font-black uppercase text-slate-950">
+                  {milestone.title}
+                </h3>
+                <p className="mt-2 text-sm font-medium leading-6 text-slate-600">
+                  {milestone.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -294,87 +767,69 @@ function Gallery() {
 
 function Contact() {
   return (
-    <section id="contact" className="bg-slate-900 px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-        <div>
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-300">Contact & Location</p>
-          <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">Book diagnostics, installation, restoration, or towing support.</h2>
-          <p className="mt-4 text-base leading-7 text-slate-300">
-            Call or WhatsApp Sound Mapricado for vehicle audio, security, auto-electrical, key coding, and restoration services in Krugersdorp.
+    <section id="contact" className="bg-slate-50 px-4 py-16 sm:py-20">
+      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+        <Reveal className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-700">
+            Book With Us
           </p>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <a href={business.phoneHref} className="rounded-lg border border-white/10 bg-slate-950/70 p-5 transition hover:border-blue-300/50">
-              <Icon name="phone" className="h-6 w-6 text-blue-300" />
-              <p className="mt-4 text-sm font-semibold text-slate-400">Phone</p>
-              <p className="mt-1 font-black text-white">{business.phoneDisplay}</p>
+          <h2 className="mt-3 text-4xl font-black uppercase tracking-tight text-slate-950 sm:text-5xl">
+            Contact Sound MaPricado
+          </h2>
+          <div className="mt-8 grid gap-4">
+            <a
+              href={business.phoneHref}
+              className="flex items-center gap-4 rounded-3xl border border-slate-200 bg-slate-50 px-5 py-5 text-sm font-black uppercase tracking-[0.14em] text-slate-900 transition hover:border-blue-700 hover:text-blue-700"
+            >
+              <Icon name="phone" className="h-6 w-6" />
+              {business.phoneDisplay}
             </a>
-            <a href={business.whatsappHref} className="rounded-lg border border-blue-300/30 bg-blue-300/10 p-5 transition hover:bg-blue-300/15">
-              <Icon name="message" className="h-6 w-6 text-blue-300" />
-              <p className="mt-4 text-sm font-semibold text-slate-400">WhatsApp</p>
-              <p className="mt-1 font-black text-white">Get a quote</p>
+            <a
+              href={business.whatsappHref}
+              className="flex items-center gap-4 rounded-3xl bg-slate-900 px-5 py-5 text-sm font-black uppercase tracking-[0.14em] text-white transition hover:bg-blue-700"
+            >
+              <Icon name="message" className="h-6 w-6" />
+              Get a Quote via WhatsApp
             </a>
-            <div className="rounded-lg border border-white/10 bg-slate-950/70 p-5">
-              <Icon name="clock" className="h-6 w-6 text-blue-300" />
-              <p className="mt-4 text-sm font-semibold text-slate-400">Operational Hours</p>
-              <div className="mt-3 space-y-1 text-sm leading-6 text-slate-300">
-                {business.hours.map((entry) => (
-                  <div key={entry.day} className="flex items-center justify-between">
-                    <span>{entry.day}</span>
-                    <span className="font-black text-white">{entry.time}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-lg border border-white/10 bg-slate-950/70 p-5">
-              <Icon name="map" className="h-6 w-6 text-blue-300" />
-              <p className="mt-4 text-sm font-semibold text-slate-400">Address</p>
-              <p className="mt-1 font-black text-white">{business.address}</p>
-            </div>
-            <div className="rounded-lg border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">Socials</p>
-              <div className="mt-4 space-y-2 text-sm leading-6">
-                {business.socials.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 font-black text-white transition hover:text-blue-300"
-                  >
-                    <Icon name={social.icon} className="h-4 w-4 text-blue-300" />
-                    {social.name}
-                  </a>
-                ))}
-              </div>
+            <a
+              href={business.emailHref}
+              className="rounded-3xl border border-slate-200 bg-slate-50 px-5 py-5 text-sm font-black uppercase tracking-[0.14em] text-slate-900 transition hover:border-blue-700 hover:text-blue-700"
+            >
+              {business.email}
+            </a>
+            <div className="rounded-3xl border border-slate-200 bg-blue-50 p-5">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-700">
+                Address
+              </p>
+              <p className="mt-2 font-black text-slate-950">
+                {business.address}
+              </p>
+              <p className="mt-3 text-sm font-semibold text-slate-700">
+                {business.hours}
+              </p>
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="min-h-[420px] overflow-hidden rounded-lg border border-white/10 bg-slate-950">
+        <Reveal
+          delay={120}
+          className="overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-sm"
+        >
           <iframe
-            title="Sound Mapricado location on Google Maps"
+            title="Sound MaPricado location on Google Maps"
             src={`https://www.google.com/maps?q=${business.mapsQuery}&output=embed`}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            className="h-[420px] w-full border-0 grayscale invert"
+            className="h-[460px] w-full border-0"
           />
-          <div className="border-t border-white/10 bg-slate-950/95 p-5">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm font-semibold text-slate-400">Find Sound Mapricado</p>
-                <p className="mt-1 font-black text-white">{business.address}</p>
-              </div>
-            <a
-                href={`https://www.google.com/maps/search/?api=1&query=${business.mapsQuery}`}
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-300/40 px-5 py-3 text-sm font-bold text-blue-200 transition hover:bg-blue-300/10"
-            >
-                Open in Maps
-              <Icon name="arrow" className="h-4 w-4" />
-            </a>
-            </div>
-          </div>
-        </div>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${business.mapsQuery}`}
+            className="flex items-center justify-center gap-3 border-t border-slate-200 bg-slate-900 px-6 py-5 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:bg-blue-700"
+          >
+            Open In Maps
+            <Icon name="arrow" className="h-4 w-4" />
+          </a>
+        </Reveal>
       </div>
     </section>
   );
@@ -382,10 +837,13 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-slate-950 px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-semibold text-white">Sound Mapricado</p>
-        <p>Proudly serving the West Rand since 2021.</p>
+    <footer className="bg-slate-100 px-4 py-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 border-t border-slate-200 pt-6 text-sm font-semibold text-slate-700 sm:flex-row sm:items-center sm:justify-between">
+        <p>{business.name}</p>
+        <p>
+          Registered {business.registration} | One-stop automotive customisation
+          workshop.
+        </p>
       </div>
     </footer>
   );
@@ -393,11 +851,16 @@ function Footer() {
 
 export default function App() {
   return (
-    <main className="min-h-screen bg-slate-950 font-sans text-white">
+    <main className="min-h-screen bg-slate-50 font-sans text-slate-900">
       <Header />
       <Hero />
+      <ShortcutBar />
+      <About />
+      <MissionVision />
       <Services />
+      <Markets />
       <Gallery />
+      <TeamAndMilestones />
       <Contact />
       <Footer />
     </main>
