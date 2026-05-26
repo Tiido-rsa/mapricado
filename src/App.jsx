@@ -822,14 +822,22 @@ function Contact() {
             referrerPolicy="no-referrer-when-downgrade"
             className="h-[460px] w-full border-0"
           />
-          <a
-            href={`https://www.google.com/maps/search/?api=1&query=${business.mapsQuery}`}
-            className="flex items-center justify-center gap-3 border-t border-slate-200 bg-slate-900 px-6 py-5 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:bg-blue-700"
-          >
-            Open In Maps
-            <Icon name="arrow" className="h-4 w-4" />
-          </a>
-        </Reveal>
+          <div className="border-t border-white/10 bg-slate-950/95 p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-slate-400">Find Sound Mapricado</p>
+                <p className="mt-1 font-black text-white">{business.address}</p>
+              </div>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${business.mapsQuery}`}
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-300/40 px-5 py-3 text-sm font-bold text-blue-200 transition hover:bg-blue-300/10"
+              >
+                Open in Maps
+                <Icon name="arrow" className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
