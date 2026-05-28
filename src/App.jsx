@@ -27,12 +27,12 @@ const images = {
   logoFull: "/assets/images/logo/logo3.png",
   
   // Individual team member images
-  ayanda: "dist\\assets\\images\\team\\ayanda.jpeg",
-  noma: "dist\\assets\\images\\team\\noma.jpeg",
-  nomalungelo: "dist\\assets\\images\\team\\nomalungelo.jpeg",
-  tshegofatso: "dist\\assets\\images\\team\\tshegofatso.jpeg",
+  ayanda: "public\\assets\\images\\team\\ayanda.jpeg",
+  noma: "public\\assets\\images\\team\\noma.jpeg",
+  nomalungelo: "public\\assets\\images\\team\\nomalungelo.jpeg",
+  tshegofatso: "public\\assets\\images\\team\\tshegofatso.jpeg",
   thandeka: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=600&q=80",
-  mandla: "dist\\assets\\images\\team\\mandla.jpeg",
+  mandla: "public\\assets\\images\\team\\mandla.jpeg",
 
 };
 
