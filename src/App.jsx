@@ -13,26 +13,28 @@ const business = {
   hours: "Mon - Fri: 9:00 - 17:00 | Sat: 8:30 - 15:00",
 };
 
+const publicBase = import.meta.env.BASE_URL;
+
 const images = {
   // Hero image
-  teamHero: "dist\\assets\\images\\team\\hero.jpeg",
+  teamHero: `${publicBase}assets/images/team/hero.jpeg`,
   workshop: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80",
   audio: "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80",
   electrical: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=900&q=80",
   interior: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
   
   // Logo images
-  logo: "public\\assets\\images\\logo\\logo1.png",
-  logoName: "public\\assets\\images\\logo\\logo2_name.png",
-  logoFull: "public\\assets\\images\\logo\\logo3.png",
+  logo: `${publicBase}assets/images/logo/logo1.png`,
+  logoName: `${publicBase}assets/images/logo/logo2_name.png`,
+  logoFull: `${publicBase}assets/images/logo/logo3.png`,
   
   // Individual team member images
-  ayanda: "public\\assets\\images\\team\\ayanda.jpeg",
-  noma: "public\\assets\\images\\team\\noma.jpeg",
-  nomalungelo: "public\\assets\\images\\team\\nomalungelo.jpeg",
-  tshegofatso: "public\\assets\\images\\team\\tshegofatso.jpeg",
+  ayanda: `${publicBase}assets/images/team/ayanda.jpeg`,
+  noma: `${publicBase}assets/images/team/noma.jpeg`,
+  nomalungelo: `${publicBase}assets/images/team/nomalungelo.jpeg`,
+  tshegofatso: `${publicBase}assets/images/team/tshegofatso.jpeg`,
   thandeka: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=600&q=80",
-  mandla: "public\\assets\\images\\team\\mandla.jpeg",
+  mandla: `${publicBase}assets/images/team/mandla.jpeg`,
 
 };
 
