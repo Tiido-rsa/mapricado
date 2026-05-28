@@ -3,5 +3,8 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: command === "build" ? "/mapricado/" : "/"
+  base: command === "build" ? "/mapricado/" : "/",
+  build: {
+    outDir: "docs",
+  },
 }));
