@@ -14,19 +14,25 @@ const business = {
 };
 
 const images = {
-  // Hero updated to reflect the full team standing next to one another
-  teamHero: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=80",
+  // Hero image
+  teamHero: "dist\\assets\\images\\team\\hero.jpeg",
   workshop: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80",
   audio: "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80",
   electrical: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=900&q=80",
   interior: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
   
-  // Individual team member image placeholders
+  // Logo images
+  logo: "/assets/images/logo/logo1.png",
+  logoName: "/assets/images/logo/logo2_name.png",
+  logoFull: "/assets/images/logo/logo3.png",
+  
+  // Individual team member images
+  ayanda: "dist\\assets\\images\\team\\ayanda.jpeg",
+  noma: "dist\\assets\\images\\team\\noma.jpeg",
+  nomalungelo: "dist\\assets\\images\\team\\nomalungelo.jpeg",
+  tshegofatso: "dist\\assets\\images\\team\\tshegofatso.jpeg",
   thandeka: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=600&q=80",
-  tshegofatso: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&h=600&q=80",
-  nomalungelo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=600&q=80",
-  mandla: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&w=600&h=600&q=80",
-  ayanda: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&h=600&q=80",
+  mandla: "dist\\assets\\images\\team\\mandla.jpeg",
 
 };
 
@@ -214,7 +220,7 @@ const team = [
     name: "Nomalungelo Matsele",
     role: "Manager / Operations Lead",
     text: "Runs day-to-day workshop operations, customer service, scheduling and community-focused initiatives.",
-    image: images.nomalungelo,
+    image: images.noma,
   },
   {
     name: "Tshegofatso Malematsa",
@@ -228,24 +234,24 @@ const team = [
     text: "Supports custom fabrication work for boot builds, enclosures and workshop fitment projects.",
     image: images.mandla,
   },
-  {
-    name: "Thandeka Malematsa",
-    role: "Director & Head of CSR",
-    image: images.thandeka,
-    text: "Runs Sound MaPricado's day-to-day operations and community initiatives. She delivers fast, high-quality automotive services while leading skills training and local CSI projects.",
-  },
-  {
-    name: "Tshegofatso Malematsa",
-    role: "Upholstery Technician",
-    image: images.tshegofatso,
-    text: "Specializes in custom vehicle upholstery for taxi, fleet, and private clients. Reupholsters seats, panels, and roofs with structural precision and daily durability.",
-  },
-  {
-    name: "Nomalungelo Matsele",
-    role: "Part-time General Worker",
-    image: images.nomalungelo,
-    text: "Supports all workshop teams with general tasks, installations, vehicle preparation, and site maintenance to guarantee smooth workflows and fast project completion.",
-  }
+  // {
+  //   name: "Thandeka Malematsa",
+  //   role: "Director & Head of CSR",
+  //   image: images.thandeka,
+  //   text: "Runs Sound MaPricado's day-to-day operations and community initiatives. She delivers fast, high-quality automotive services while leading skills training and local CSI projects.",
+  // },
+  // {
+  //   name: "Tshegofatso Malematsa",
+  //   role: "Upholstery Technician",
+  //   image: images.tshegofatso,
+  //   text: "Specializes in custom vehicle upholstery for taxi, fleet, and private clients. Reupholsters seats, panels, and roofs with structural precision and daily durability.",
+  // },
+  // {
+  //   name: "Nomalungelo Matsele",
+  //   role: "Part-time General Worker",
+  //   image: images.nomalungelo,
+  //   text: "Supports all workshop teams with general tasks, installations, vehicle preparation, and site maintenance to guarantee smooth workflows and fast project completion.",
+  // }
 ];
 
 const milestones = [
@@ -348,9 +354,9 @@ function Header() {
           <a href="#services" className="transition hover:text-blue-700">
             Services
           </a>
-          <a href="#markets" className="transition hover:text-blue-700">
+          {/* <a href="#markets" className="transition hover:text-blue-700">
             Markets
-          </a>
+          </a> */}
           <a href="#team" className="transition hover:text-blue-700">
             Team
           </a>
@@ -977,8 +983,8 @@ export default function App() {
       <About />
       <MissionVision />
       <Services />
-      <Markets />
-      <Gallery />
+      {/* <Markets /> */}
+      {/* <Gallery /> */}
       <TeamAndMilestones />
       <Contact />
       <Footer />
