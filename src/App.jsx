@@ -22,9 +22,9 @@ const images = {
   interior: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
   
   // Logo images
-  logo: "/assets/images/logo/logo1.png",
-  logoName: "/assets/images/logo/logo2_name.png",
-  logoFull: "/assets/images/logo/logo3.png",
+  logo: "public\\assets\\images\\logo\\logo1.png",
+  logoName: "public\\assets\\images\\logo\\logo2_name.png",
+  logoFull: "public\\assets\\images\\logo\\logo3.png",
   
   // Individual team member images
   ayanda: "public\\assets\\images\\team\\ayanda.jpeg",
